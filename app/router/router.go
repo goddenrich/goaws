@@ -54,6 +54,7 @@ var routingTable = map[string]http.HandlerFunc{
 	"ListSubscriptions":         sns.ListSubscriptions,
 	"Unsubscribe":               sns.Unsubscribe,
 	"Publish":                   sns.Publish,
+	"PublishBatch":              sns.PublishBatch,
 
 	// SNS Internal
 	"ConfirmSubscription": sns.ConfirmSubscription,
