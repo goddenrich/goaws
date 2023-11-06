@@ -153,6 +153,24 @@ func TestSNSRoutes(t *testing.T) {
 	publishResponse, err := client.Publish(publishParams)
 	require.NoError(t, err, "SNS Publish Failed")
 	t.Logf("Succesfully published: %s\n", *publishResponse.MessageId)
+
+	publishBatchParams := &sns.PublishBatchInput{
+		TopicArn: response.TopicArn,
+		PublishBatchRequestEntries: []*sns.PublishBatchRequestEntry{
+			{
+				Id:      aws.String("1"),
+				Message: aws.String("Cool"),
+			},
+			{
+				Id:      aws.String("2"),
+				Message: aws.String("Dog"),
+			},
+		},
+	}
+	publishBatchResponse, err := client.PublishBatch(publishBatchParams)
+	require.NoError(t, err, "SNS PublishBatch Failed")
+	assert.Empty(t, publishBatchResponse.Failed)
+	assert.Length(t, publishBatchResponse.Successful, 2)
 }
 
 func newSQS(t *testing.T, region string, endpoint string) *sqs.SQS {
